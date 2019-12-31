@@ -1,4 +1,8 @@
-
+<ul class="todo-items">
+    <app-todo-item
+        *ngFor="let item of todoItemsList;"
+        [todoItem]="item"></app-todo-item>
+</ul>
 
 <!-- Add Button -->
 <a href="#" class="float">

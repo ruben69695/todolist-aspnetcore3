@@ -1,7 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #323232;
     color: #FFF;
+    font: 16px/1.3 'Roboto', sans-serif;
 }

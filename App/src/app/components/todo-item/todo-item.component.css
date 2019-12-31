@@ -1,0 +1,18 @@
+.todo-item {
+    background-color: #FD4B67;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-bottom: 15px;
+    padding: 0;
+}
+
+.todo-item-description p{
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    margin:0;
+}
+
+.todo-item-description {
+    margin-left: 5vh;
+    font-size: 1.2em;
+}
