@@ -7,4 +7,8 @@ export class TodoItem {
         this.creation_date = creation_date;
         this.finish_date = finishDate;
     }
+
+    public isCompleted(): boolean {
+        return this.finish_date != null;
+    }
 }

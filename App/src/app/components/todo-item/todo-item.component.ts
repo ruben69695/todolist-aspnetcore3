@@ -15,4 +15,11 @@ export class TodoItemComponent implements OnInit {
   ngOnInit() {
   }
 
+  public completeTask() {
+    console.log('Completed');
+    if (!this.todoItem.isCompleted()) {
+      this.todoItem.finish_date = new Date();
+    }
+  }
+
 }

@@ -3,7 +3,6 @@ ul.todo-items {
     display: table;
     width: 100%;
     list-style-type: none;
-    vertical-align: middle;
     padding: 0;
     margin-top: 5vh;
 }

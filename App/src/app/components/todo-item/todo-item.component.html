@@ -1,6 +1,22 @@
 <li class="todo-item">
-    <div class="todo-item-check"></div>
-    <div class="todo-item-description">
-        <p>{{ todoItem.description }}</p>
+    <div class="todo-item-content">
+        <div class="row todo-item-check" 
+            (click)="completeTask()">
+            <div class="col col-sm-12">
+                <i
+                    [ngClass]="{
+                        'fas fa-lg todo-item-icon': true,
+                        'todo-item-uncompleted fa-circle': !todoItem.isCompleted(),
+                        'todo-item-completed fa-check-circle': todoItem.isCompleted()
+                }"></i>
+            </div>
+        </div>
+        <div class="todo-item-description">
+            <p
+                [ngClass]="{
+                    'text-crossover': todoItem.isCompleted()
+                }"
+                >{{ todoItem.description }}</p>
+        </div>
     </div>
 </li>
