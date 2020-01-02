@@ -1,10 +1,10 @@
 <ul class="todo-items">
     <app-todo-item
-        *ngFor="let item of todoItemsList;"
+        *ngFor="let item of todoItemsService.todoItemsList;"
         [todoItem]="item"></app-todo-item>
 </ul>
 
 <!-- Add Button -->
-<a href="#" class="float">
+<a [routerLink]="['create-new-item']" class="float">
     <i class="fa fa-plus fa-lg my-float"></i>
 </a>

@@ -1,0 +1,19 @@
+.login-container {
+    position: absolute;
+    left: 30%;
+    right: 30%;
+    top: 50%;
+}
+
+a {
+    margin: 10px;
+    color: #FD4B67;
+}
+
+a:hover {
+    color: #F50057;
+}
+
+.title {
+    margin-bottom: 20px;
+}

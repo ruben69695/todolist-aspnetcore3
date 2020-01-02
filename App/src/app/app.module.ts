@@ -9,6 +9,9 @@ import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
 import { HomeComponent } from './components/home/home.component';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { TodoItemComponent } from './components/todo-item/todo-item.component';
+import { TodoCreateNewItemComponent } from './components/todo-create-new-item/todo-create-new-item.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +20,19 @@ import { TodoItemComponent } from './components/todo-item/todo-item.component';
     HomeComponent,
     TodoListComponent,
     TodoItemComponent,
+    TodoCreateNewItemComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    BrowserAnimationsModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', redirectTo: '/todolist', pathMatch: 'full' },
+      { path: 'todolist', component: TodoListComponent },
+      { path: 'todolist/create-new-item', component: TodoCreateNewItemComponent },
+      { path: 'login', component: LoginComponent }
     ])
   ],
   providers: [],

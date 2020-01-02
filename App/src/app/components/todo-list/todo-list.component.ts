@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoItem } from 'src/app/models/todo-item.model';
+import { TodoItemsService } from 'src/app/services/todoitems.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -8,14 +9,11 @@ import { TodoItem } from 'src/app/models/todo-item.model';
 })
 export class TodoListComponent implements OnInit {
 
-  public todoItemsList: TodoItem[] = [
-    new TodoItem('Acabar los deberes', new Date(), null),
-    new TodoItem('Hacer Vladimir', new Date(), null),
-    new TodoItem('Actualizar repositorio del proyecto Todo List en GitHub', new Date(), null),
-    new TodoItem('Pagar 0.87€ por el servidor de Minecraft en PayPal a Fran', new Date(), null)
-  ];
+  private todoItemsService: TodoItemsService;
 
-  constructor() { }
+  constructor(todoItemsService: TodoItemsService) {
+    this.todoItemsService = todoItemsService;
+  }
 
   ngOnInit() {
   }

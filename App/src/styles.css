@@ -7,6 +7,51 @@
 
 body {
     background-color: #323232;
-    color: #FFF;
+    color: #FFFFFF;
     font: 16px/1.3 'Roboto', sans-serif;
+}
+
+.form-primary {
+    background-color: #323232;
+    border-color: #323232;
+    border-bottom: solid 1px #FD4B67;
+    color: #FFFFFF;
+}
+
+.form-primary:focus {
+    background-color: #323232;
+    border-color: #323232;
+    border-bottom: solid 1px #FD4B67;
+    box-shadow: none;
+    color: #FFFFFF;
+}
+
+.btn-todo-primary {
+    background-color: #F50057;
+    border-color: #F50057;
+    color: #FFFFFF;
+    padding: 0.7vh;
+    border-radius: 50px;
+}
+
+.float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #FFF;
+    color: #F50057;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 1px 1px 2px #999;
+}
+
+.float:hover {
+    background-color: #eeeeee;
+    color: #F50057;
+}
+
+.my-float {
+    margin-top: 22px;
 }

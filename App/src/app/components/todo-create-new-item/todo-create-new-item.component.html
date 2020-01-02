@@ -1,0 +1,14 @@
+<form #newTodoItemForm="ngForm">
+    <div class="create-todoitem-form">
+        <div class="form-group">
+            <input type="text" class="form-control form-primary" [(ngModel)]="description" name="description" placeholder="Todo description..."/>
+        </div>
+        <button type="submit" class="btn-todo-primary save-todoitem" (click)="onCreateTodoItem()">Save</button>
+    </div>
+</form>
+<div [@showHide]="sucessIsHidden ? 'hide' : 'show'" (@showHide.done)="onAnimationDoneEvent($event)" class="sucess-alert">
+    <strong> Well done!</strong> Todo item has been created successfully.
+</div>
+<a [routerLink]="['/todolist']" class="float">
+    <i class="fa fa-arrow-left fa-lg my-float"></i>
+</a>
