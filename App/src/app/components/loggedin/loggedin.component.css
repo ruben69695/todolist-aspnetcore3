@@ -1,0 +1,11 @@
+.loggedin-container {
+    position: absolute;
+    left: 30%;
+    right: 30%;
+    top: 50%;
+}
+
+.loggedin-btn {
+    margin-top: 50px;
+    width: 50%;
+}

@@ -1,10 +1,18 @@
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+
 
 namespace todoApi
 {
@@ -26,6 +34,53 @@ namespace todoApi
             {
                 configuration.RootPath = "../App/dist";
             });
+
+            services
+                .AddAuthentication(options => {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                })
+                .AddCookie()
+                .AddGoogle(options => {
+                    options.ClientId = Configuration["Google:ClientId"];
+                    options.ClientSecret = Configuration["Google:ClientSecret"];
+                    options.CallbackPath = new PathString("/signin-google");
+                })
+                .AddMicrosoftAccount(options => {
+                    options.ClientId = Configuration["Microsoft:ClientId"];
+                    options.ClientSecret = Configuration["Microsoft:ClientSecret"];
+                    options.CallbackPath = new PathString("/signin-microsoft");
+                })
+                .AddOAuth("GitHub", options => {
+                    options.ClientId = Configuration["GitHub:ClientId"];
+                    options.ClientSecret = Configuration["GitHub:ClientSecret"];
+
+                    options.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+                    options.TokenEndpoint = "https://github.com/login/oauth/access_token";
+                    options.UserInformationEndpoint = "https://api.github.com/user";
+                    options.CallbackPath = new PathString("/signin-github");
+
+                    options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
+                    options.ClaimActions.MapJsonKey(ClaimTypes.Name, "name");
+                    options.ClaimActions.MapJsonKey("urn.github.login", "login");
+                    options.ClaimActions.MapJsonKey("urn.github.url", "html_url");
+                    options.ClaimActions.MapJsonKey("urn.github.avatar", "avatar_url");
+
+                    options.Events = new Microsoft.AspNetCore.Authentication.OAuth.OAuthEvents
+                    {
+                        OnCreatingTicket = async context => {
+                            var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+
+                            var response = await context.Backchannel.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, context.HttpContext.RequestAborted);
+                            response.EnsureSuccessStatusCode();
+
+                            var user = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
+                            context.RunClaimActions(user.RootElement);
+                        }
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +105,9 @@ namespace todoApi
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

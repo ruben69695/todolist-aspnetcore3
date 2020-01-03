@@ -12,6 +12,7 @@ import { TodoItemComponent } from './components/todo-item/todo-item.component';
 import { TodoCreateNewItemComponent } from './components/todo-create-new-item/todo-create-new-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
+import { LoggedinComponent } from './components/loggedin/loggedin.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LoginComponent } from './components/login/login.component';
     TodoItemComponent,
     TodoCreateNewItemComponent,
     LoginComponent,
+    LoggedinComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -32,7 +34,8 @@ import { LoginComponent } from './components/login/login.component';
       { path: '', redirectTo: '/todolist', pathMatch: 'full' },
       { path: 'todolist', component: TodoListComponent },
       { path: 'todolist/create-new-item', component: TodoCreateNewItemComponent },
-      { path: 'login', component: LoginComponent }
+      { path: 'login', component: LoginComponent },
+      { path: 'loggedin', component: LoggedinComponent },
     ])
   ],
   providers: [],
