@@ -15,6 +15,7 @@ namespace todoApi.Controllers {
         }
         
         [HttpGet]
+        [ActionName("login-google")]
         public IActionResult LoginGoogle(string redirectPath = "/") {
             var authProperties = new AuthenticationProperties() {
                 RedirectUri = redirectPath,
@@ -25,6 +26,7 @@ namespace todoApi.Controllers {
         }
 
         [HttpGet]
+        [ActionName("login-github")]
         public IActionResult LoginGitHub(string redirectPath = "/") {
             var authProperties = new AuthenticationProperties() { 
                 RedirectUri = redirectPath,
@@ -35,6 +37,7 @@ namespace todoApi.Controllers {
         }
 
         [HttpGet]
+        [ActionName("login-microsoft")]
         public IActionResult LoginMicrosoft(string redirectPath = "/") {
             var authProperties = new AuthenticationProperties() { 
                 RedirectUri = redirectPath,
@@ -46,6 +49,7 @@ namespace todoApi.Controllers {
 
         [HttpGet]
         [Authorize]
+        [ActionName("get-user-information")]
         public JsonResult GetUserInformation() {
             object data = null;
 
