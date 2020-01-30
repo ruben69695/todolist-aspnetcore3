@@ -30,6 +30,12 @@ namespace Data.Repositories.Mongo
             return await data.ToListAsync();
         }
 
+        public async Task<TModel> Get(string id)
+        {
+            var data = await _context.Set<TModel>().FindAsync(element => element.Id == id);
+            return await data.FirstOrDefaultAsync();
+        }
+
         public async Task<List<TModel>> GetAll()
         {
             var data = await _context.Set<TModel>().FindAsync(element => true);

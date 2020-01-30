@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
-namespace Data.Repositories.Interfaces
+namespace Services.Interfaces
 {
-    public interface IRepository<TModel> where TModel : class
+    public interface IService<TModel>
     {
         Task<List<TModel>> GetAll();
         Task<TModel> Get(string id);
