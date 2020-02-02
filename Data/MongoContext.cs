@@ -1,6 +1,6 @@
 using System;
 using Data.Helpers.Mongo;
-using Model;
+using Models;
 using MongoDB.Driver;
 
 namespace Data

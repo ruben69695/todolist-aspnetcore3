@@ -1,5 +1,5 @@
 using Data.Repositories.Interfaces;
-using Model;
+using Models;
 
 namespace Data.Repositories.Mongo
 {

@@ -1,4 +1,4 @@
-using Model;
+using Models;
 
 namespace Data.Repositories.Interfaces
 {

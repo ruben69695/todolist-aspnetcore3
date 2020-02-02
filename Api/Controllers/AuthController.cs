@@ -62,8 +62,6 @@ namespace todoApi.Controllers {
 
             return new JsonResult(data);
         }
-
-
     }
 
 }

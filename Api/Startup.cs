@@ -12,7 +12,11 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
-
+using Data.Repositories.Interfaces;
+using Data.Repositories.Mongo;
+using Data;
+using Services.Interfaces;
+using Services;
 
 namespace todoApi
 {
@@ -34,7 +38,7 @@ namespace todoApi
             {
                 configuration.RootPath = "../App/dist";
             });
-
+            services.AddServicesForInjection();
             services
                 .AddAuthentication(options => {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -128,6 +132,17 @@ namespace todoApi
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+    }
+
+    public static class ServiceCollectionExtensions {
+        public static IServiceCollection AddServicesForInjection(this IServiceCollection services) {
+            return services
+                .AddTransient<MongoContext>()
+                .AddTransient<IUserRepository, UserRepository>()
+                .AddTransient<ITodoRepository, TodoRepository>()
+                .AddTransient<IUserService, UserService>()
+                .AddTransient<ITodoService, TodoService>();
         }
     }
 }

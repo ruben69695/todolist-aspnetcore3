@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using Services.Results;
 
 namespace Services.Interfaces
 {
     public interface IService<TModel>
     {
-        Task<List<TModel>> GetAll();
-        Task<TModel> Get(string id);
-        Task<List<TModel>> Get(Expression<Func<TModel, bool>> filter);
-        Task<TModel> Create(TModel item);
-        Task Update(string id, TModel item);
-        Task Remove(TModel item);
-        Task Remove(string id);
+        Task<OperationResult> GetAll();
+        Task<OperationResult> Get(string id);
+        Task<OperationResult> Create(TModel item);
+        Task<OperationResult> Update(string id, TModel item);
+        Task<OperationResult> Remove(TModel item);
+        Task<OperationResult> Remove(string id);
     }
 }
