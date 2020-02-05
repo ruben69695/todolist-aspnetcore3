@@ -12,11 +12,14 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+
 using Data.Repositories.Interfaces;
 using Data.Repositories.Mongo;
 using Data;
 using Services.Interfaces;
 using Services;
+using Data.Helpers.Mongo;
+using Microsoft.Extensions.Options;
 
 namespace todoApi
 {
@@ -32,6 +35,8 @@ namespace todoApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<DatabaseSettings>(Configuration.GetSection("TodoDatabaseSettings"));
+
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -142,7 +147,8 @@ namespace todoApi
                 .AddTransient<IUserRepository, UserRepository>()
                 .AddTransient<ITodoRepository, TodoRepository>()
                 .AddTransient<IUserService, UserService>()
-                .AddTransient<ITodoService, TodoService>();
+                .AddTransient<ITodoService, TodoService>()
+                .AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
         }
     }
 }
