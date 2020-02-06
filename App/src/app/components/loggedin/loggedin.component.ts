@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-loggedin',
@@ -9,11 +10,14 @@ import { Router } from '@angular/router';
 export class LoggedinComponent implements OnInit {
 
   private router: Router;
-  constructor(router: Router) {
+  private authService: AuthService;
+  constructor(router: Router, authService: AuthService) {
     this.router = router;
+    this.authService = authService;
    }
 
   ngOnInit() {
+    this.authService.userRegistration();
   }
 
   startClicked(): boolean {

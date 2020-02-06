@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
@@ -36,9 +37,9 @@ import { LoggedinComponent } from './components/loggedin/loggedin.component';
       { path: 'todolist/create-new-item', component: TodoCreateNewItemComponent },
       { path: 'login', component: LoginComponent },
       { path: 'loggedin', component: LoggedinComponent },
-    ])
+    ]),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

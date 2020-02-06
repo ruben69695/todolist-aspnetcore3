@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Services.Interfaces;
 using Models;
 using Services.Results;
+using System.Collections.Generic;
 
 namespace todoApi.Controllers
 {
@@ -22,6 +23,38 @@ namespace todoApi.Controllers
         {
             _userService = userService;
             _logger = logger;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [ProducesResponseType(typeof(List<User>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Get() {
+            IActionResult actionResult = null;
+            try
+            {
+                var operation = await _userService.GetAll();
+                if (operation.HasError) {
+                    actionResult = BuildProblemResult(operation);
+                    _logger.LogError(operation.Error.ToString());
+                } 
+                else {
+                    if (operation.Code == UserOperationCodes.Retrieved) {
+                        actionResult = Ok(operation.Result);
+                    }
+                    else {
+                        throw new ArgumentOutOfRangeException(nameof(operation.Code), operation.Code, "User code operation not supported");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                actionResult = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+                _logger.LogError(ex, ex.Message);
+            }
+            return actionResult;
         }
 
         [HttpPost]
