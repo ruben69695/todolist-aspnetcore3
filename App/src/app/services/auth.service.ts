@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { User } from '../models/user.model';
-import { LiteEvent } from '../events/lite-event';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -9,13 +8,8 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly onUnAuthorizedUser = new LiteEvent<string>();
-  private readonly onUserRegistered = new LiteEvent<User>();
   private readonly userCookieName: string = 'user-registered';
   private user: User;
-  public get getUser() { return this.user; }
-  public get whenUserRegistered() { return this.onUserRegistered.expose(); }
-  public get whenUserUnAuthorized() { return this.onUnAuthorizedUser.expose(); }
   constructor(private http: HttpClient, private router: Router, private cookieService: CookieService) { }
 
   public userRegistration(): void {
@@ -38,19 +32,48 @@ export class AuthService {
     });
   }
 
+  public async registerUser(): Promise<User> {
+    const urlUserInfo = '/api/auth/get-user-information';
+    const urlRegUser = '/api/users';
+    const jsonHeaders: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let user: User;
+    try {
+      const userInfo = await this.http
+        .get<any>(urlUserInfo, {headers:  jsonHeaders})
+        .toPromise();
+      const userRegistered = await this.http
+        .post<User>(urlRegUser, JSON.stringify(new User('', userInfo.identifier, userInfo.name)), {headers: jsonHeaders})
+        .toPromise();
+      user = userRegistered;
+      this.onAuthorizedAction(userRegistered);
+    } catch (error) {
+      console.log(error);
+      this.onUnAuthorizedAction();
+    }
+    return user;
+  }
+
+  public getUser(): User {
+    if (this.cookieService.check(this.userCookieName)) {
+      this.user = JSON.parse(this.cookieService.get(this.userCookieName)) as User;
+    } else {
+      this.user = null;
+    }
+
+    return this.user;
+  }
+
   private onAuthorizedAction(userAuthorized: User) {
     this.user = userAuthorized;
-    this.onUserRegistered.trigger(userAuthorized);
 
     if (this.cookieService.check(this.userCookieName)) {
       this.cookieService.delete(this.userCookieName);
     }
-    this.cookieService.set(this.userCookieName, JSON.stringify(userAuthorized));
+    this.cookieService.set(this.userCookieName, JSON.stringify(userAuthorized), null, null, null, true, 'None');
   }
 
   private onUnAuthorizedAction() {
     this.user = undefined;
-    this.onUnAuthorizedUser.trigger('unauthorized');
     this.router.navigateByUrl('/login');
 
     if (this.cookieService.check(this.userCookieName)) {

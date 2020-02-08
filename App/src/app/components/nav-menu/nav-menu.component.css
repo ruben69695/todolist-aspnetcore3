@@ -26,3 +26,7 @@ nav {
   background-color: #E32442;
   padding: 1.5vh;
 }
+
+.nav-link {
+  color: #FFFFFF;
+}
