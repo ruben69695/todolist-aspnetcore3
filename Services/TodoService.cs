@@ -186,6 +186,37 @@ namespace Services
             return operationResult;
         }
 
+        public async Task<OperationResult> GetPendingTodoItemsByUserId(string userId)
+        {
+            var operationResult = new OperationResult();
+            
+            try
+            {
+                if (IsUserIdEmpty(userId)) {
+                    operationResult.Error = new GenericError {
+                        Code = TodoListOperationCodes.EmptyUserIdentification,
+                        Description = "error getting the pending todo items for a user, you must provide the user id"
+                    };
+                }
+                else {
+                    var list = await _todoRepository.Get(item => item.UserIdentifier == userId && !item.Completed);
+                    operationResult.Code = TodoListOperationCodes.Retrieved;
+                    operationResult.Result = list;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                operationResult.Error = new GenericError {
+                    Code = ErrorCodes.InternalError,
+                    Description = "internal error getting the pending todo items for a user",
+                    Exception = ex
+                };
+            }
+
+            return operationResult;
+        }
+
         public async Task<OperationResult> Remove(Todo item)
         {
             var operationResult = new OperationResult();
@@ -315,5 +346,6 @@ namespace Services
         private bool IsNullOrEmpty(string item) {
             return string.IsNullOrEmpty(item);
         }
+        
     }
 }

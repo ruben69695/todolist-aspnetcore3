@@ -8,5 +8,6 @@ namespace Services.Interfaces
     { 
         Task<OperationResult> GetTodoItemByUserId(string itemId, string userId);
         Task<OperationResult> GetTodoListByUserId(string userId);
+        Task<OperationResult> GetPendingTodoItemsByUserId(string userId);
     }
 }
